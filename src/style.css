@@ -1,0 +1,18 @@
+body {
+  background-color: aqua;
+}
+
+#gameboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 600px;
+  grid-gap: 1px;
+  background-color: black;
+  border: 1px black solid;
+  aspect-ratio: 1/1;
+}
+
+.gameboard-cell {
+  display: flex;
+  background-color: aliceblue;
+}
