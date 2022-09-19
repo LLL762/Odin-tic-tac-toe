@@ -5,6 +5,7 @@
 /test/temp
 /test/ChangesAndRemovals
 /test/**/dev-defaults.webpack.lock
+/dist
 /benchmark/js
 /benchmark/fixtures
 /examples/**/dist
