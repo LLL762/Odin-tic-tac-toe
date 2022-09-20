@@ -1,8 +1,6 @@
 const GameBoardService = (() => {
-   
   const playerMoveAction = (cellX, cellY, gameBoard) => {
     gameBoard.markCell(cellX, cellY);
-    gameboard.
   };
 
   const startNewGame = (gameBoard) => {
