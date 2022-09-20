@@ -5,6 +5,8 @@ body {
 #gameboard {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+  grid-auto-columns: 1fr;
   max-width: 600px;
   grid-gap: 1px;
   background-color: black;
@@ -15,4 +17,12 @@ body {
 .gameboard-cell {
   display: flex;
   background-color: aliceblue;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameboard-cell > svg {
+  height: 70%;
+  width: 70%;
+  aspect-ratio: 1/1;
 }

@@ -1,40 +1,7 @@
-const Gameboard = (player1, player2) => {
-  const emptyBoard = [
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
-  ];
+import { PlayerSymbols } from "./player";
 
-  const board = emptyBoard;
-  const maxIndex = board.length - 1;
-
-  let filledCell = 0;
-  let currentPlayer = player1;
-
-  const resetBoard = () => {
-    board = emptyBoard;
-    filledCell = 0;
-  };
-
-  const playerMove = (player, cellX, cellY) => {
-    if (player.getId() !== currentPlayer.getId()) {
-      throw new Error("Not your turn");
-    }
-
-    currentPlayer = player === player1 ? player2 : player1;
-
-    filledCell++;
-  };
-
-  const markCell = (player, cellX, cellY) => {
-    if (emptyBoard[cellX][cellY] !== 0) {
-      throw new Error("Cell not empty");
-    }
-
-    board[cellIndex] = player === player1 ? 1 : 2;
-  };
-
-  const isGameOver = (cellX, cellY, playerSymbol) => {
+const GameBoardService = (() => {
+  const isGameOver = (board) => {
     let wins = [];
 
     if (getNbSymbolsOnLine(cellX, playerSymbol) == maxIndex) {
@@ -67,12 +34,20 @@ const Gameboard = (player1, player2) => {
     return "continue";
   };
 
-  const getNbSymbolsOnLine = (lineIndex, playerSymbol) => {
-    let count = 0;
+  const getNbSymbolsOnLine = (board, lineIndex) => {
+    let countCross = 0;
+    let countCircle = 0;
 
     while (count < board.length) {
-      if (emptyBoard[lineIndex][count] == playerSymbol) {
-        count++;
+      switch (board[lineIndex][count]) {
+        case PlayerSymbols.getCross():
+          countCross++;
+          break;
+        case PlayerSymbols.getCircle():
+          countCircle++;
+          break;
+        default:
+          break;
       }
     }
 
@@ -113,10 +88,4 @@ const Gameboard = (player1, player2) => {
 
     return count;
   };
-
-  const getGameBoard = () => JSON.parse(JSON.stringify(board));
-
-  return { getGameBoard, resetBoard, playerMove };
-};
-
-export { Gameboard };
+})();
