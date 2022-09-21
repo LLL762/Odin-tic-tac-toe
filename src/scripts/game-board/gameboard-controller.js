@@ -2,7 +2,7 @@ import { BoardViewManager } from "./board-view-manager";
 import { GameBoardService } from "./game-board-service";
 import { GameOverService } from "./game-over-service";
 import { Gameboard } from "./gameboard";
-import { Player, PlayerSymbols } from "./player";
+import { Player, PlayerSymbols } from "../player";
 
 const GameBoardController = (() => {
   const pedro = Player(1, "Pedro");
@@ -22,6 +22,7 @@ const GameBoardController = (() => {
     const cell = event.currentTarget;
     const cellX = Number(cell.id.split("-")[0]);
     const cellY = Number(cell.id.split("-")[1]);
+    let wins = [];
 
     GameBoardService.playerMoveAction(cellX, cellY, gameboard);
     cell.removeEventListener("click", cellOnclick);
@@ -30,17 +31,24 @@ const GameBoardController = (() => {
       PlayerSymbols.getTemplate(gameboard.getCurrentPlayer().symbol)
     );
 
-    console.log(GameOverService.isGameOver(gameboard, cellX, cellY));
+    wins = GameOverService.isGameOver(gameboard, cellX, cellY);
+
+    if (wins.length > 1) {
+      wins.forEach((cell) => {
+        BoardViewManager.highlighcell(cell[0], cell[1]);
+      });
+      BoardViewManager.clearCellsOnClick(cellOnclick);
+    }
 
     gameboard.changePlayer();
   };
 
-  const newGameAction = (event) => {
+  const newGameAction = () => {
     GameBoardService.startNewGame(gameboard);
     BoardViewManager.clearBoard(cellOnclick);
   };
 
-  newGameBtn.addEventListener("click", (event) => newGameAction(event));
+  newGameBtn.addEventListener("click", () => newGameAction(event));
 
   return { initGameboard, clearGameBoard };
 })();

@@ -1,5 +1,5 @@
-import { ObservableHelper } from "./observable-helper";
-import { PlayerSymbols } from "./player";
+import { ObservableHelper } from "../observable-helper";
+import { PlayerSymbols } from "../player";
 
 const Gameboard = (player1, player2) => {
   const emptyBoard = [

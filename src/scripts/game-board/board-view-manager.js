@@ -1,4 +1,4 @@
-import { Templates } from "./templates";
+import { Templates } from "../templates";
 
 const BoardViewManager = (() => {
   const boardContainer = document.getElementById("gameboard");
@@ -24,9 +24,15 @@ const BoardViewManager = (() => {
 
   const clearBoard = (cellOnclick) => {
     for (let cell of boardContainer.querySelectorAll(".gameboard-cell")) {
+      cell.classList.remove("cell-highlight");
       cell.innerHTML = Templates.getEmptySvg();
       cell.addEventListener("click", cellOnclick);
-      console.log(cell.event);
+    }
+  };
+
+  const clearCellsOnClick = (cellOnclick) => {
+    for (let cell of boardContainer.querySelectorAll(".gameboard-cell")) {
+      cell.removeEventListener("click", cellOnclick);
     }
   };
 
@@ -34,7 +40,15 @@ const BoardViewManager = (() => {
     cell.innerHTML = symbol;
   };
 
-  return { initBoard, clearBoard, markCell };
+  const highlighcell = (cellX, cellY) => {
+    const cellId = `${cellX}-${cellY}`;
+    console.log(cellId);
+    const cell = document.getElementById(cellId);
+
+    cell.classList.add("cell-highlight");
+  };
+
+  return { initBoard, clearBoard, markCell, highlighcell, clearCellsOnClick };
 })();
 
 export { BoardViewManager };

@@ -1,46 +1,48 @@
-import { PlayerSymbols } from "./player";
+import { PlayerSymbols } from "../player";
+import { MatrixUtility } from "../utility";
 
 const GameOverService = (() => {
   const isGameOver = (gameboard, cellX, cellY) => {
     const playerSymbol = gameboard.getCurrentPlayer().symbol;
     const board = gameboard.getBoard();
+    let winningCells = [];
 
-    let wins = [];
-
-    if (getNbSymbolsOnLine(board, cellY).get(playerSymbol) == board.length) {
-      wins.push(`win on line number ${cellY}`);
+    if (getNbSymbolsOnRow(board, cellY).get(playerSymbol) == board.length) {
+      winningCells.push(...MatrixUtility.getRowCellsCoord(board.length, cellY));
     }
 
     if (getNbSymbolsOnColumn(board, cellX).get(playerSymbol) == board.length) {
-      wins.push(`win on column number ${cellX}`);
+      winningCells.push(
+        ...MatrixUtility.getColumnCellsCoord(board.length, cellX)
+      );
     }
 
     if (
       cellX == cellY &&
       getNbSymbolsOnDiagonal(board).get(playerSymbol) == board.length
     ) {
-      wins.push("win on diagonal");
+      winningCells.push(...MatrixUtility.getDiagonalCellsCoord(board.length));
     }
 
     if (
       cellX + cellY == board.length - 1 &&
       getNbSymbolsOnCrossDiagonal(board).get(playerSymbol) == board.length
     ) {
-      wins.push("win on cross-diagonal");
+      winningCells.push(...MatrixUtility.getCrossDiagCellsCoord(board.length));
     }
 
-    if (wins.length > 0) {
-      return wins;
+    if (winningCells.length > 0) {
+      return winningCells;
     }
 
     if (gameboard.getFilledCells() == board.length * board.length) {
-      return "tie";
+      winningCells.push("tie");
     }
 
-    return "continue";
+    return winningCells;
   };
 
-  const getNbSymbolsOnLine = (board, lineIndex) => {
+  const getNbSymbolsOnRow = (board, lineIndex) => {
     let countCross = 0;
     let countCircle = 0;
     let result = [];
