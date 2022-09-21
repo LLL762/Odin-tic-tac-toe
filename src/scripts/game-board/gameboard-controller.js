@@ -3,6 +3,7 @@ import { GameBoardService } from "./game-board-service";
 import { GameOverService } from "./game-over-service";
 import { Gameboard } from "./gameboard";
 import { Player, PlayerSymbols } from "../player";
+import { EventNames, ObservableHelper } from "../observable-helper";
 
 const GameBoardController = (() => {
   const pedro = Player(1, "Pedro");
@@ -10,6 +11,9 @@ const GameBoardController = (() => {
   pedra.symbol = PlayerSymbols.getCircle();
   const gameboard = Gameboard(pedro, pedra);
   const newGameBtn = document.getElementById("new-game-btn");
+  const obsHelper = ObservableHelper();
+
+  const getObsHelper = () => obsHelper;
 
   const initGameboard = () =>
     BoardViewManager.initBoard(gameboard.getBoard(), cellOnclick);
@@ -37,7 +41,19 @@ const GameBoardController = (() => {
       wins.forEach((cell) => {
         BoardViewManager.highlighcell(cell[0], cell[1]);
       });
+
+      obsHelper.notifyObservers(
+        EventNames.getWin(),
+        gameboard.getCurrentPlayer(),
+        2
+      );
+
       BoardViewManager.clearCellsOnClick(cellOnclick);
+      BoardViewManager.gameOver();
+    }
+
+    if (wins.length == 1) {
+      obsHelper.notifyObservers(EventNames.getTie(), 1, 2);
     }
 
     gameboard.changePlayer();
@@ -46,11 +62,15 @@ const GameBoardController = (() => {
   const newGameAction = () => {
     GameBoardService.startNewGame(gameboard);
     BoardViewManager.clearBoard(cellOnclick);
+
+    obsHelper.notifyObservers(EventNames.getNewGame(), 1, 2);
   };
 
   newGameBtn.addEventListener("click", () => newGameAction(event));
 
-  return { initGameboard, clearGameBoard };
+  const getGameBoard = () => gameboard;
+
+  return { initGameboard, clearGameBoard, getObsHelper, getGameBoard };
 })();
 
 export { GameBoardController };

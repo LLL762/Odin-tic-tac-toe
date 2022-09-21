@@ -1,5 +1,5 @@
 const Templates = (() => {
-  const cell = `<div class="gameboard-cell"> <svg> </svg> </div>`;
+  const cell = `<div class="gameboard-cell interactive"> <svg> </svg> </div>`;
 
   const cross = `<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <path

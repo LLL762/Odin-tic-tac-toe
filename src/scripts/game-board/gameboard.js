@@ -1,4 +1,4 @@
-import { ObservableHelper } from "../observable-helper";
+import { EventNames, ObservableHelper } from "../observable-helper";
 import { PlayerSymbols } from "../player";
 
 const Gameboard = (player1, player2) => {
@@ -18,13 +18,15 @@ const Gameboard = (player1, player2) => {
   let filledCells = 0;
   let currentPlayer = player1;
 
-  const setCurrentPlayer = (player) => {
-    obsHelper.notifyObservers("player-change", currentPlayer, player);
-    currentPlayer = player;
-  };
-
   const changePlayer = () => {
-    currentPlayer = currentPlayer == player1 ? player2 : player1;
+    const nextPlayer = currentPlayer == player1 ? player2 : player1;
+    obsHelper.notifyObservers(
+      EventNames.getPlayerChanged(),
+      currentPlayer,
+      nextPlayer
+    );
+
+    currentPlayer = nextPlayer;
   };
 
   const getCurrentPlayer = () => {
@@ -63,13 +65,15 @@ const Gameboard = (player1, player2) => {
 
   const getFilledCells = () => filledCells;
 
+  const getObsHelper = () => obsHelper;
+
   return {
     player1,
     player2,
     getCurrentPlayer,
     getBoard,
     resetBoard,
-    obsHelper,
+    getObsHelper,
     changePlayer,
     markCell,
     startNewGame,

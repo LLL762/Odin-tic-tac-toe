@@ -14,4 +14,18 @@ const ObservableHelper = () => {
   return { addObserver, removeObserver, notifyObservers };
 };
 
-export { ObservableHelper };
+const EventNames = (() => {
+  const win = "win";
+  const newGame = "newGame";
+  const playerChanged = "playerChanged";
+  const tie = "tie";
+
+  const getWin = () => win;
+  const getNewGame = () => newGame;
+  const getPlayerChanged = () => playerChanged;
+  const getTie = () => tie;
+
+  return { getWin, getNewGame, getPlayerChanged, getTie };
+})();
+
+export { ObservableHelper, EventNames };
